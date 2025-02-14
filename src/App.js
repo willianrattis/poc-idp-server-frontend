@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, TextField, Button, CircularProgress, Alert } from '@mui/material';
+import { Container, TextField, Button, CircularProgress, Alert, AppBar, Toolbar, Typography, Box } from '@mui/material';
 import ClientsTable from './ClientsTable';
 import { getClients, registerClient } from './api';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,7 +9,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [clientId, setClientId] = useState('');
-  const [clientSecret, setClientSecret] = useState(''); // Estado para client secret
+  const [clientSecret, setClientSecret] = useState('');
   const [clientName, setClientName] = useState('');
 
   useEffect(() => {
@@ -48,47 +48,62 @@ function App() {
   };
 
   return (
-    <Container sx={{ mt: 4 }}>
-      {loading ? (
-        <CircularProgress />
-      ) : error ? (
-        <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
-      ) : null}
+    <>
+      {/* Header com AppBar */}
+      <AppBar position="static" sx={{ backgroundColor: '#f5f5f5', boxShadow: 0 }}>
+        <Toolbar>
+          <Typography variant="h6" color="black">
+            Register Clients IDP Server
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-      <form noValidate autoComplete="off" style={{ marginBottom: '2rem' }}>
-        <TextField
-          label="Client Id"
-          variant="outlined"
-          value={clientId}
-          onChange={(e) => setClientId(e.target.value)}
-          required
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Client Secret"
-          variant="outlined"
-          value={clientSecret}
-          fullWidth
-          margin="normal"
-          InputProps={{ readOnly: true }}  // Campo somente leitura
-        />
-        <TextField
-          label="Client Name"
-          variant="outlined"
-          value={clientName}
-          onChange={(e) => setClientName(e.target.value)}
-          required
-          fullWidth
-          margin="normal"
-        />
-        <Button variant="contained" color="primary" onClick={handleRegister} sx={{ mt: 2 }}>
-          Registrar Cliente
-        </Button>
-      </form>
+      <Container sx={{ mt: 4 }}>
+        {loading ? (
+          <Box display="flex" justifyContent="center" my={4}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
+          <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>
+        ) : null}
 
-      <ClientsTable clients={clients} />
-    </Container>
+        {/* Formulário para cadastro de clientes */}
+        <Box component="form" noValidate autoComplete="off" sx={{ mb: 4 }}>
+          <TextField
+            label="Client Id"
+            variant="outlined"
+            value={clientId}
+            onChange={(e) => setClientId(e.target.value)}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Client Secret"
+            variant="outlined"
+            value={clientSecret}
+            fullWidth
+            margin="normal"
+            InputProps={{ readOnly: true }}
+          />
+          <TextField
+            label="Client Name"
+            variant="outlined"
+            value={clientName}
+            onChange={(e) => setClientName(e.target.value)}
+            required
+            fullWidth
+            margin="normal"
+          />
+          <Button variant="contained" color="primary" onClick={handleRegister} sx={{ mt: 2 }}>
+            Registrar Cliente
+          </Button>
+        </Box>
+
+        {/* Tabela exibindo os clientes registrados */}
+        <ClientsTable clients={clients} />
+      </Container>
+    </>
   );
 }
 
