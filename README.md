@@ -1,70 +1,164 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# IDP-CLIENT Frontend
 
-## Available Scripts
+  
 
-In the project directory, you can run:
+Esta é a aplicação frontend do IDP-CLIENT, construída com React e Material UI. Ela é responsável por interagir com o IDP Server local (rodando em [https://localhost:7019](https://localhost:7019)) para:
 
-### `yarn start`
+- Carregar a lista de clientes registrados no IDP.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Registrar novos clientes no IDP através de um formulário.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Como Executar
 
-### `yarn test`
+  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Pré-requisitos
 
-### `yarn build`
+ 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [Node.js](https://nodejs.org/)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [Yarn](https://classic.yarnpkg.com/en/docs/install/)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  
 
-### `yarn eject`
+### Instalação
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1.  **Clone o repositório:**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
 
-## Learn More
+git clone <URL_DO_REPOSITORIO>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+cd idp-client
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
 
-### Code Splitting
+2.  **Instale as dependências:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  
 
-### Analyzing the Bundle Size
+```bash
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+yarn install
 
-### Making a Progressive Web App
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Executando a Aplicação
 
-### Advanced Configuration
+  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Para iniciar o servidor de desenvolvimento, execute:
 
-### Deployment
+  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
 
-### `yarn build` fails to minify
+yarn  start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+
+A aplicação será iniciada em http://localhost:3000.
+
+  
+
+### Como Funciona
+
+• **Carregamento de Clientes:**
+
+Ao carregar, a aplicação faz uma requisição GET para o endpoint de listagem de clientes no IDP, que está rodando localmente em https://localhost:7019. Os clientes registrados são exibidos em uma tabela.
+
+• **Registro de Novos Clientes:**
+
+Um formulário permite inserir os dados para registro de um novo cliente, contendo:
+
+• **ClientId:** Identificador único do cliente.
+
+• **ClientSecret:** Segredo do cliente (gerado como GUID em maiúsculas e não editável).
+
+• **ClientName:** Nome amigável da aplicação (exibido nos dashboards).
+
+Ao clicar no botão “Registrar Cliente”, uma requisição POST é enviada para https://localhost:7019/connect/register com os dados informados.
+
+• **Ambiente Local:**
+
+Todas as chamadas estão configuradas para apontar para o ambiente local, com o IDP Server rodando em https://localhost:7019.
+
+  
+
+#### Links Úteis
+
+• IDP Server (POC em .NET): https://github.com/willianrattis/poc-idp-server
+
+  
+
+• Endpoints do IDP:
+
+• Registro de Cliente:
+
+  
+
+```bash
+
+curl  --location  'https://localhost:7019/connect/register'  \
+
+--header  'Content-Type: application/json'  \
+
+--data  '{
+
+"clientId": "service-2",
+
+"clientSecret": "067cbc02-b3c2-4424-af47-ed75ec946777",
+
+"clientName": "Nome do Cliente"
+
+}'
+
+```
+
+  
+
+• Consulta de Clientes:
+
+```bash
+
+curl --location 'https://localhost:7019/connect/register'
+
+```
+
+### Tecnologias Utilizadas
+
+  
+
+• React
+
+• Material UI
+
+• Axios (para chamadas de API)
+
+• Yarn
+
+  
+
+### Considerações
+
+• Ambiente Didático:
+
+Este projeto foi desenvolvido para fins didáticos. A aplicação frontend interage com o IDP Server local para demonstrar a criação e consulta de clientes.
+
+• CORS:
+
+O IDP Server está configurado para aceitar requisições de qualquer origem, permitindo a comunicação com o frontend rodando em http://localhost:3000.
+
+  
+
+### License
+
+  
+
+Este projeto está licenciado sob a MIT License. Consulte o arquivo LICENSE para mais detalhes.
