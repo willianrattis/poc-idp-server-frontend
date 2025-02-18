@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Container, TextField, Button, CircularProgress, Alert, AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { Container, TextField, Button, CircularProgress, Alert, AppBar, Toolbar, Typography, Box, InputAdornment, IconButton, Snackbar } from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ClientsTable from './ClientsTable';
 import { getClients, registerClient } from './api';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +12,7 @@ function App() {
   const [clientId, setClientId] = useState('');
   const [clientSecret, setClientSecret] = useState('');
   const [clientName, setClientName] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     // Gera um GUID em maiúsculas para o Client Secret e define no estado
@@ -45,6 +47,13 @@ function App() {
       console.error(err);
       setError(err.response?.data || 'Erro ao registrar o cliente.');
     }
+  };
+
+  // Função para copiar o Client Secret para a área de transferência
+  const handleCopy = () => {
+    navigator.clipboard.writeText(clientSecret).then(() => {
+      setSnackbarOpen(true);
+    });
   };
 
   return (
@@ -84,7 +93,16 @@ function App() {
             value={clientSecret}
             fullWidth
             margin="normal"
-            InputProps={{ readOnly: true }}
+            InputProps={{
+              readOnly: true,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleCopy} edge="end">
+                    <ContentCopyIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             label="Client Name"
@@ -102,6 +120,14 @@ function App() {
 
         {/* Tabela exibindo os clientes registrados */}
         <ClientsTable clients={clients} />
+
+        {/* Snackbar para feedback ao copiar */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={3000}
+          onClose={() => setSnackbarOpen(false)}
+          message="Client Secret copiado!"
+        />
       </Container>
     </>
   );
